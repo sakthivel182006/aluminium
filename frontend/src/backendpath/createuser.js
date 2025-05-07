@@ -20,7 +20,7 @@ export const frontendcreatedeploy12 = () => {
     // Create a new user
     const createnewuser = async (newUser) => {
       try {
-        const res = await fetch("/api/users", {
+        const res = await fetch("https://aluminium-ulwg.onrender.com/api/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newUser),
@@ -37,7 +37,7 @@ export const frontendcreatedeploy12 = () => {
     // User login functionality
     const loginUser = async (loginData) => {
       try {
-        const res = await fetch("/api/users/login", {
+        const res = await fetch("https://aluminium-ulwg.onrender.com/api/users/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(loginData),
@@ -54,7 +54,7 @@ export const frontendcreatedeploy12 = () => {
     // Create booking
     const createBooking = async (bookingData) => {
       try {
-        const res = await fetch("/api/bookings", {
+        const res = await fetch("https://aluminium-ulwg.onrender.com/api/bookings", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(bookingData),
