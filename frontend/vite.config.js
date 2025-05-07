@@ -6,8 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': {
-        target: 'https://aluminium-ulwg.onrender.com/',
+      '/': {
+        target: 'https://aluminium-ulwg.onrender.com',
         changeOrigin: true,
         secure: false,
       },
