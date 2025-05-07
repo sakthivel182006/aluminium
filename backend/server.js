@@ -14,23 +14,28 @@ const PORT = process.env.PORT || 4000;
 const corsOptions = {
   origin: ['https://madheshwaraenterprices.vercel.app', 'http://localhost:4000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true, // Allow credentials (cookies, headers, etc.)
+  credentials: true,
 };
 
 // Middleware
-app.use(cors(corsOptions)); // Apply CORS middleware with specified options
-app.use(express.json()); // Middleware to parse JSON request bodies
+app.use(cors(corsOptions));
+app.use(express.json());
 
-// Mount the routes
+// Routes
 app.use('/api/users', userRoutes);
-app.use('/api', bookingRoutes); // Booking routes are now properly mounted
+app.use('/api', bookingRoutes);
+
+// ✅ Hello World route
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
 
 // Database connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('DB Connected:', mongoose.connection.host))
   .catch((err) => console.error('MongoDB connection error:', err));
 
-// Start the server
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
