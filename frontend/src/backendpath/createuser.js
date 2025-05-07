@@ -20,7 +20,7 @@ export const frontendcreatedeploy12 = () => {
     // Create a new user
     const createnewuser = async (newUser) => {
       try {
-        const res = await fetch("https://aluminium-ulwg.onrender.com/api/users", {
+        const res = await fetch("/api/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newUser),
