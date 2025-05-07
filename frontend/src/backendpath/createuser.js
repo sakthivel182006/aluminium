@@ -30,7 +30,7 @@ export const frontendcreatedeploy12 = () => {
           ? { success: true, message: "User registered successfully" }
           : { success: false, message: data.message || "Registration failed" };
       } catch {
-        return { success: false, message: "Server connection error" };
+        return { success: false, message: "make the check box enable karo" };
       }
     };
   

@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:4000',
+        target: 'https://aluminium-ulwg.onrender.com/',
         changeOrigin: true,
         secure: false,
       },
