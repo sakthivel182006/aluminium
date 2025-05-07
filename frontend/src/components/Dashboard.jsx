@@ -5,39 +5,34 @@ import Settings from './Settings';
 import Working from './Working';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState('home'); // Track the active tab (home, profile, settings)
-  const [showModal, setShowModal] = useState(false); // State to control the modal visibility
-  const [name, setName] = useState('John Doe'); // Placeholder for name
-  const [email, setEmail] = useState('john.doe@example.com'); // Placeholder for email
+const Dashboard = ({ userId, logout }) => {
+  const [activeTab, setActiveTab] = useState('home');
+  const [showModal, setShowModal] = useState(false);
+  const [name, setName] = useState('John Doe');
+  const [email, setEmail] = useState('john.doe@example.com');
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-  // Randomly generate a letter for the profile logo
-  const randomLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26)); // Random letter A-Z
+  const randomLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
 
-  // Function to toggle modal visibility
   const handleProfileClick = () => {
     setShowModal(true);
   };
 
-  // Function to close modal
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
-  // Function to handle form submission and update user details (for now just log the values)
   const handleUpdateDetails = () => {
     console.log('Updated Name:', name);
     console.log('Updated Email:', email);
-    handleCloseModal(); // Close the modal after update
+    handleCloseModal();
   };
 
   return (
     <div>
-      {/* Top Navigation Bar */}
       <nav className="navbar navbar-expand-lg navbar-light bg-info fixed-top vw-100">
         <div className="container-fluid w-100">
           <a className="navbar-brand text-white" href="#">Dashboard</a>
@@ -45,14 +40,14 @@ const Dashboard = () => {
             <button
               className={`nav-link btn ${activeTab === 'home' ? 'btn-primary' : 'btn-light'} text-white`}
               onClick={() => handleTabChange('home')}
-              style={{ marginRight: '240px' }} // Adds space between buttons
+              style={{ marginRight: '240px' }}
             >
               Home
             </button>
             <button
               className={`nav-link btn ${activeTab === 'profile' ? 'btn-primary' : 'btn-light'} text-white`}
               onClick={() => handleTabChange('profile')}
-              style={{ marginRight: '240px' }} // Adds space between buttons
+              style={{ marginRight: '240px' }}
             >
               Business
             </button>
@@ -71,9 +66,12 @@ const Dashboard = () => {
               Settings
             </button>
 
-            {/* Profile Logo (Randomly generated) */}
+            <button className="btn btn-danger text-white" onClick={logout} style={{ marginRight: '20px' }}>
+              Logout
+            </button>
+
             <div
-              className={`nav-link ${activeTab === 'profile' ? 'text-primary' : ''}`}
+              className="nav-link"
               onClick={handleProfileClick}
               style={{ cursor: 'pointer' }}
             >
@@ -82,7 +80,7 @@ const Dashboard = () => {
                 style={{
                   width: '40px',
                   height: '40px',
-                  backgroundColor: '#ff6347', // Tomato color for profile logo
+                  backgroundColor: '#ff6347',
                   color: '#fff',
                   borderRadius: '50%',
                   fontSize: '20px',
@@ -96,7 +94,6 @@ const Dashboard = () => {
         </div>
       </nav>
 
-      {/* Main Content Area with padding to prevent overlap */}
       <div className="p-4 mt-5">
         {activeTab === 'home' && <Home />}
         {activeTab === 'profile' && <Profile />}
@@ -104,13 +101,12 @@ const Dashboard = () => {
         {activeTab === 'working' && <Working />}
       </div>
 
-      {/* Modal for Profile Update */}
       {showModal && (
         <div className="modal show" style={{ display: 'block' }} onClick={handleCloseModal}>
           <div
             className="modal-dialog"
             style={{ marginTop: '100px', maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto' }}
-            onClick={(e) => e.stopPropagation()} // Prevent closing the modal when clicking inside
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="modal-content bg-light">
               <div className="modal-header bg-info text-white">
@@ -140,8 +136,12 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Close</button>
-                <button type="button" className="btn btn-primary" onClick={handleUpdateDetails}>Update</button>
+                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
+                  Close
+                </button>
+                <button type="button" className="btn btn-primary" onClick={handleUpdateDetails}>
+                  Update
+                </button>
               </div>
             </div>
           </div>

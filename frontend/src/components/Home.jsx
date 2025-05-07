@@ -1,161 +1,139 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { frontendcreatedeploy12 } from '../backendpath/createuser.js';
 
 const Home = () => {
-  const handleSubmit = (e) => {
+  const { createBooking } = frontendcreatedeploy12();
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phoneNumber: '',
+    address: '',
+    doorOrWindow: '',
+    size: '',
+    material: '',
+    color: '',
+    installationDate: ''
+  });
+
+  const [formColor, setFormColor] = useState('');
+  const [bgColor, setBgColor] = useState('');
+
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  useEffect(() => {
+    setFormColor(getRandomColor());
+    setBgColor(getRandomColor());
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic
+    console.log('Form submitted with data:', formData);
+    
+    const response = await createBooking(formData);
+
+    if (response.success) {
+      console.log(response.message);
+      alert("sucess");
+      // Optional: show success alert
+    } else {
+      console.error(response.message);
+      // Optional: show error alert
+    }
   };
 
   return (
-    <div className="vw-100 d-flex flex-column justify-content-center align-items-center bg-light">
-      {/* Home Page Form Section */}
+    <div className="vw-100 d-flex flex-column justify-content-center align-items-center py-5" style={{ backgroundColor: bgColor }}>
       <form
         onSubmit={handleSubmit}
-        className="w-100 h-100 p-4 bg-white"
-        style={{ maxWidth: '1000px' }}
+        className="w-100 h-100 p-5 shadow-lg rounded-lg"
+        style={{ maxWidth: '1000px', backgroundColor: formColor }}
       >
-        <h2 className="text-center mb-4">Welcome to the Dashboard</h2>
-        <p className="lead text-center mb-4">
+        <h2 className="text-center mb-4 text-primary">Welcome to the Dashboard</h2>
+        <p className="lead text-center mb-4 text-muted">
           This is your main dashboard where you can explore different sections, manage your profile, and customize your settings.
         </p>
 
-        {/* Features Section */}
-        <section className="features-section py-5 w-100 h-100 p-4 bg-white" style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <h3 className="text-center mb-4">Explore Our Features</h3>
-          <div className="row d-flex justify-content-center">
-            {/* Feature 1 */}
-            <div className="col-md-4">
-              <div className="card">
-                <div className="card-body text-center">
-                  <h4>Manage Your Profile</h4>
-                  <p>Update personal details, contact information, and profile preferences in this section.</p>
-                </div>
-              </div>
-            </div>
-            {/* Feature 2 */}
-            <div className="col-md-4">
-              <div className="card">
-                <div className="card-body text-center">
-                  <h4>Track Your Activities</h4>
-                  <p>Keep track of your activities and progress with real-time updates and insights.</p>
-                </div>
-              </div>
-            </div>
-            {/* Feature 3 */}
-            <div className="col-md-4">
-              <div className="card">
-                <div className="card-body text-center">
-                  <h4>Manage Settings</h4>
-                  <p>Customize your experience by adjusting settings for notifications, privacy, and preferences.</p>
-                </div>
-              </div>
-            </div>
+        <section className="fitting-details-section py-4 w-100 h-100 p-4 bg-white" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <h3 className="text-center mb-4 text-success">Booking Details</h3>
+
+          <div className="form-group">
+            <label htmlFor="name" className="text-dark">Name</label>
+            <input type="text" className="form-control shadow-sm" id="name" name="name" value={formData.name} onChange={handleChange} required placeholder="Enter your full name" />
           </div>
+
+          <div className="form-group">
+            <label htmlFor="email" className="text-dark">Email</label>
+            <input type="email" className="form-control shadow-sm" id="email" name="email" value={formData.email} onChange={handleChange} required placeholder="Enter your email" />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="phoneNumber" className="text-dark">Phone Number</label>
+            <input type="text" className="form-control shadow-sm" id="phoneNumber" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required placeholder="Enter your phone number" />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="address" className="text-dark">Address</label>
+            <input type="text" className="form-control shadow-sm" id="address" name="address" value={formData.address} onChange={handleChange} required placeholder="Enter your address" />
+          </div>
+
+          <h4 className="text-center mb-3">Fitting Details</h4>
+
+          <div className="form-group">
+            <label htmlFor="doorOrWindow" className="text-dark">Door or Window</label>
+            <select className="form-control shadow-sm" id="doorOrWindow" name="doorOrWindow" value={formData.doorOrWindow} onChange={handleChange} required>
+              <option value="">Select</option>
+              <option value="door">Door</option>
+              <option value="window">Window</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="size" className="text-dark">Size (e.g., 2m x 3m)</label>
+            <input type="text" className="form-control shadow-sm" id="size" name="size" value={formData.size} onChange={handleChange} required placeholder="Enter fitting size" />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="material" className="text-dark">Material</label>
+            <select className="form-control shadow-sm" id="material" name="material" value={formData.material} onChange={handleChange} required>
+              <option value="">Select</option>
+              <option value="aluminum">Aluminum</option>
+              <option value="steel">Steel</option>
+              <option value="wood">Wood</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="color" className="text-dark">Color</label>
+            <input type="text" className="form-control shadow-sm" id="color" name="color" value={formData.color} onChange={handleChange} required placeholder="Enter color" />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="installationDate" className="text-dark">Installation Date</label>
+            <input type="date" className="form-control shadow-sm" id="installationDate" name="installationDate" value={formData.installationDate} onChange={handleChange} required />
+          </div>
+
+          <button type="submit" className="btn btn-primary btn-lg w-100 mt-4 shadow-sm">
+            Submit
+          </button>
         </section>
 
-        {/* Statistics Section */}
-        <section className="statistics-section py-5 w-100 h-100 p-4 bg-white" style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <h3 className="text-center mb-4">Dashboard Statistics</h3>
-          <div className="row d-flex justify-content-center">
-            {/* Stat 1 */}
-            <div className="col-md-3">
-              <div className="card">
-                <div className="card-body text-center">
-                  <h4>Active Users</h4>
-                  <h5>2,450</h5>
-                </div>
-              </div>
-            </div>
-            {/* Stat 2 */}
-            <div className="col-md-3">
-              <div className="card">
-                <div className="card-body text-center">
-                  <h4>Projects Completed</h4>
-                  <h5>350</h5>
-                </div>
-              </div>
-            </div>
-            {/* Stat 3 */}
-            <div className="col-md-3">
-              <div className="card">
-                <div className="card-body text-center">
-                  <h4>Pending Tasks</h4>
-                  <h5>87</h5>
-                </div>
-              </div>
-            </div>
-            {/* Stat 4 */}
-            <div className="col-md-3">
-              <div className="card">
-                <div className="card-body text-center">
-                  <h4>Messages</h4>
-                  <h5>18</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Recent Activities Section */}
-        <section className="recent-activities-section py-5 w-100 h-100 p-4 bg-white" style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <h3 className="text-center mb-4">Recent Activities</h3>
-          <div className="row d-flex justify-content-center">
-            {/* Activity 1 */}
-            <div className="col-md-6 col-lg-3 mb-4">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">User Registered</h5>
-                  <p className="card-text">A new user has successfully registered on the platform.</p>
-                  <p className="text-muted">10 minutes ago</p>
-                </div>
-              </div>
-            </div>
-            {/* Activity 2 */}
-            <div className="col-md-6 col-lg-3 mb-4">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">Profile Updated</h5>
-                  <p className="card-text">John Doe updated their profile details and preferences.</p>
-                  <p className="text-muted">30 minutes ago</p>
-                </div>
-              </div>
-            </div>
-            {/* Activity 3 */}
-            <div className="col-md-6 col-lg-3 mb-4">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">New Comment Posted</h5>
-                  <p className="card-text">A new comment was posted on your recent post.</p>
-                  <p className="text-muted">1 hour ago</p>
-                </div>
-              </div>
-            </div>
-            {/* Activity 4 */}
-            <div className="col-md-6 col-lg-3 mb-4">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">Project Completed</h5>
-                  <p className="card-text">The development of the new feature was successfully completed.</p>
-                  <p className="text-muted">3 hours ago</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Calls to Action Section */}
-        <section className="cta-section py-5 text-center w-100 h-100 p-4 bg-white" style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <h3>Ready to take action?</h3>
+        <section className="cta-section py-5 text-center w-100 h-100 p-4 bg-light" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <h3 className="text-info">Ready to take action?</h3>
           <p className="lead">Click below to get started with your tasks, settings, or explore more features.</p>
           <button className="btn btn-primary btn-lg">Get Started</button>
-        </section>
-
-        {/* Footer Section */}
-        <section
-          className="footer-section py-4 bg-dark text-white text-center w-100 h-100 p-4 bg-white"
-          style={{ maxWidth: '1000px', margin: '0 auto' }}
-        >
-          <p>&copy; 2025 Dashboard. All Rights Reserved.</p>
         </section>
       </form>
     </div>

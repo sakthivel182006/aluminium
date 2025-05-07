@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dashboard from './components/Dashboard';
+import { frontendcreatedeploy12 } from './backendpath/createuser';
 
 const App = () => {
   const [isRegister, setIsRegister] = useState(true);
@@ -11,13 +12,15 @@ const App = () => {
     checked: false
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
   const [formStyles, setFormStyles] = useState({
     boxShadow: '',
     backgroundColor: '',
     inputBorderColor: ''
   });
 
-  // Function to generate random colors
+  const { createnewuser, loginUser } = frontendcreatedeploy12();
+
   const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -27,7 +30,6 @@ const App = () => {
     return color;
   };
 
-  // Function to update the styles
   const updateStyles = () => {
     setFormStyles({
       boxShadow: `10px 30px 70px 12px ${getRandomColor()}`,
@@ -36,10 +38,20 @@ const App = () => {
     });
   };
 
-  // Use useEffect to change styles automatically every 3 seconds
   useEffect(() => {
     const interval = setInterval(updateStyles, 3000);
-    return () => clearInterval(interval); // Clean up on unmount
+    return () => clearInterval(interval);
+  }, []);
+
+  // Check if the user is already logged in on page load
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    const storedLoginStatus = localStorage.getItem('isLoggedIn') === 'true';
+    
+    if (storedLoginStatus) {
+      setIsLoggedIn(true);
+      setUserId(storedUserId);
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -50,26 +62,38 @@ const App = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!isRegister) {
-      // Simulate a login with hardcoded credentials
-      if (formData.email === 'user@example.com' && formData.password === 'password123') {
-        setIsLoggedIn(true); // Mark as logged in
+      const res = await loginUser({ email: formData.email, password: formData.password });
+      if (res.success) {
+        setUserId(res.userId);
+        setIsLoggedIn(true);
+        // Store login status in localStorage
+        localStorage.setItem('userId', res.userId);
+        localStorage.setItem('isLoggedIn', 'true');
       } else {
-        alert('Invalid login credentials');
+        alert(res.message);
       }
     } else {
-      // Handle registration (not implemented for this example)
-      console.log('Registered:', formData);
+      const res = await createnewuser(formData);
+      alert(res.message);
     }
+  };
+
+  const logout = () => {
+    setIsLoggedIn(false);
+    setUserId(null);
+    // Remove user data from localStorage
+    localStorage.removeItem('userId');
+    localStorage.setItem('isLoggedIn', 'false');
   };
 
   return (
     <div className="container">
       {isLoggedIn ? (
-        <Dashboard />
+        <Dashboard userId={userId} logout={logout} />
       ) : (
         <div className="vw-100 d-flex flex-column justify-content-center align-items-center bg-light">
           <form
@@ -79,11 +103,10 @@ const App = () => {
               maxWidth: '1000px',
               boxShadow: formStyles.boxShadow,
               backgroundColor: formStyles.backgroundColor,
-              transition: 'all 0.5s ease-in-out' // Smooth transition for changes
+              transition: 'all 0.5s ease-in-out'
             }}
           >
             <h2 className="text-center mb-4">{isRegister ? 'Register' : 'Login'} Form</h2>
-
             {isRegister && (
               <div className="form-group mb-4">
                 <label htmlFor="name">Name</label>
@@ -95,10 +118,7 @@ const App = () => {
                   placeholder="Enter your name"
                   value={formData.name}
                   onChange={handleChange}
-                  style={{
-                    height: '60px',
-                    borderColor: formStyles.inputBorderColor
-                  }}
+                  style={{ height: '60px', borderColor: formStyles.inputBorderColor }}
                 />
               </div>
             )}
@@ -113,10 +133,7 @@ const App = () => {
                 placeholder="Enter email"
                 value={formData.email}
                 onChange={handleChange}
-                style={{
-                  height: '60px',
-                  borderColor: formStyles.inputBorderColor
-                }}
+                style={{ height: '60px', borderColor: formStyles.inputBorderColor }}
               />
             </div>
 
@@ -130,10 +147,7 @@ const App = () => {
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
-                style={{
-                  height: '60px',
-                  borderColor: formStyles.inputBorderColor
-                }}
+                style={{ height: '60px', borderColor: formStyles.inputBorderColor }}
               />
             </div>
 
@@ -147,17 +161,11 @@ const App = () => {
                   checked={formData.checked}
                   onChange={handleChange}
                 />
-                <label className="form-check-label" htmlFor="check">
-                  Check me out
-                </label>
+                <label className="form-check-label" htmlFor="check">Check me out</label>
               </div>
             )}
 
-            <button
-              type="submit"
-              className="btn btn-primary btn-lg w-100 mb-3"
-              style={{ height: '60px' }}
-            >
+            <button type="submit" className="btn btn-primary btn-lg w-100 mb-3" style={{ height: '60px' }}>
               {isRegister ? 'Register' : 'Login'}
             </button>
 
@@ -165,22 +173,14 @@ const App = () => {
               {isRegister ? (
                 <p>
                   Already registered?{' '}
-                  <button
-                    type="button"
-                    className="btn btn-link"
-                    onClick={() => setIsRegister(false)}
-                  >
+                  <button type="button" className="btn btn-link" onClick={() => setIsRegister(false)}>
                     Login
                   </button>
                 </p>
               ) : (
                 <p>
                   Don't have an account?{' '}
-                  <button
-                    type="button"
-                    className="btn btn-link"
-                    onClick={() => setIsRegister(true)}
-                  >
+                  <button type="button" className="btn btn-link" onClick={() => setIsRegister(true)}>
                     Register
                   </button>
                 </p>
