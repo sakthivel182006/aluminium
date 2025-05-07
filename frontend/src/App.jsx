@@ -1,16 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Dashboard from './components/Dashboard'; // Import the Dashboard component
+import Dashboard from './components/Dashboard';
 
 const App = () => {
-  const [isRegister, setIsRegister] = useState(true); // Toggle between Register and Login
+  const [isRegister, setIsRegister] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     checked: false
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Track login status
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [formStyles, setFormStyles] = useState({
+    boxShadow: '',
+    backgroundColor: '',
+    inputBorderColor: ''
+  });
+
+  // Function to generate random colors
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  // Function to update the styles
+  const updateStyles = () => {
+    setFormStyles({
+      boxShadow: `10px 30px 70px 12px ${getRandomColor()}`,
+      backgroundColor: getRandomColor(),
+      inputBorderColor: getRandomColor()
+    });
+  };
+
+  // Use useEffect to change styles automatically every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(updateStyles, 3000);
+    return () => clearInterval(interval); // Clean up on unmount
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -39,14 +69,18 @@ const App = () => {
   return (
     <div className="container">
       {isLoggedIn ? (
-        <Dashboard /> // Show the dashboard component if logged in
+        <Dashboard />
       ) : (
-        // Show the login/register form if not logged in
         <div className="vw-100 d-flex flex-column justify-content-center align-items-center bg-light">
           <form
             onSubmit={handleSubmit}
             className="w-100 h-100 p-4 bg-white"
-            style={{ maxWidth: '1000px' }}
+            style={{
+              maxWidth: '1000px',
+              boxShadow: formStyles.boxShadow,
+              backgroundColor: formStyles.backgroundColor,
+              transition: 'all 0.5s ease-in-out' // Smooth transition for changes
+            }}
           >
             <h2 className="text-center mb-4">{isRegister ? 'Register' : 'Login'} Form</h2>
 
@@ -61,7 +95,10 @@ const App = () => {
                   placeholder="Enter your name"
                   value={formData.name}
                   onChange={handleChange}
-                  style={{ height: '60px' }}
+                  style={{
+                    height: '60px',
+                    borderColor: formStyles.inputBorderColor
+                  }}
                 />
               </div>
             )}
@@ -76,7 +113,10 @@ const App = () => {
                 placeholder="Enter email"
                 value={formData.email}
                 onChange={handleChange}
-                style={{ height: '60px' }}
+                style={{
+                  height: '60px',
+                  borderColor: formStyles.inputBorderColor
+                }}
               />
             </div>
 
@@ -90,7 +130,10 @@ const App = () => {
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
-                style={{ height: '60px' }}
+                style={{
+                  height: '60px',
+                  borderColor: formStyles.inputBorderColor
+                }}
               />
             </div>
 

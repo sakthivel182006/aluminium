@@ -38,39 +38,38 @@ const Dashboard = () => {
   return (
     <div>
       {/* Top Navigation Bar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top vw-100">
+      <nav className="navbar navbar-expand-lg navbar-light bg-info fixed-top vw-100">
         <div className="container-fluid w-100">
-          <a className="navbar-brand" href="#">Dashboard</a>
+          <a className="navbar-brand text-white" href="#">Dashboard</a>
           <div className="navbar-nav mx-auto">
             <button
-              className={`nav-link btn ${activeTab === 'home' ? 'text-primary' : ''}`}
+              className={`nav-link btn ${activeTab === 'home' ? 'btn-primary' : 'btn-light'} text-white`}
               onClick={() => handleTabChange('home')}
               style={{ marginRight: '240px' }} // Adds space between buttons
             >
               Home
             </button>
             <button
-              className={`nav-link btn ${activeTab === 'profile' ? 'text-primary' : ''}`}
+              className={`nav-link btn ${activeTab === 'profile' ? 'btn-primary' : 'btn-light'} text-white`}
               onClick={() => handleTabChange('profile')}
               style={{ marginRight: '240px' }} // Adds space between buttons
             >
               Business
             </button>
             <button
-              className={`nav-link btn ${activeTab === 'working' ? 'text-primary' : ''}`}
+              className={`nav-link btn ${activeTab === 'working' ? 'btn-primary' : 'btn-light'} text-white`}
               onClick={() => handleTabChange('working')}
               style={{ marginRight: '240px' }}
             >
               Working
             </button>
             <button
-              className={`nav-link btn ${activeTab === 'settings' ? 'text-primary' : ''}`}
+              className={`nav-link btn ${activeTab === 'settings' ? 'btn-primary' : 'btn-light'} text-white`}
               onClick={() => handleTabChange('settings')}
               style={{ marginRight: '240px' }}
             >
               Settings
             </button>
-           
 
             {/* Profile Logo (Randomly generated) */}
             <div
@@ -83,7 +82,7 @@ const Dashboard = () => {
                 style={{
                   width: '40px',
                   height: '40px',
-                  backgroundColor: '#007bff',
+                  backgroundColor: '#ff6347', // Tomato color for profile logo
                   color: '#fff',
                   borderRadius: '50%',
                   fontSize: '20px',
@@ -113,8 +112,8 @@ const Dashboard = () => {
             style={{ marginTop: '100px', maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto' }}
             onClick={(e) => e.stopPropagation()} // Prevent closing the modal when clicking inside
           >
-            <div className="modal-content">
-              <div className="modal-header">
+            <div className="modal-content bg-light">
+              <div className="modal-header bg-info text-white">
                 <h5 className="modal-title">Update Profile</h5>
                 <button type="button" className="btn-close" onClick={handleCloseModal}></button>
               </div>
