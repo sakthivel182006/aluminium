@@ -105,7 +105,7 @@ const Dashboard = ({ userId, logout }) => {
         <div className="modal show" style={{ display: 'block' }} onClick={handleCloseModal}>
           <div
             className="modal-dialog"
-            style={{ marginTop: '100px', maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto' }}
+            style={{ marginTop: '100px', maxWidth: '501px', marginLeft: 'auto', marginRight: 'auto' }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="modal-content bg-light">
