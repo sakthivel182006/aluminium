@@ -5,7 +5,8 @@ import {
   updateUser,
   deleteUser,
   sendOTP,
-  verifyOTP
+  verifyOTP,
+  getallUser
 } from "../controller/usercontroler.js";
 
 const router = express.Router();
@@ -14,6 +15,7 @@ router.post("/", createUser); // Route for creating a new user
 router.post("/login", loginUser);
 router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);
+router.put("/getall", getallUser);
 router.post("/send-otp", sendOTP);
 router.post("/verify-otp", verifyOTP);
 
