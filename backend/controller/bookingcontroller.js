@@ -134,3 +134,15 @@ export const deleteBooking = async (req, res) => {
     res.status(500).json({ message: "Server error. Unable to delete booking." });
   }
 };
+export const deleteAllBookings = async (req, res) => {
+  try {
+    const result = await Booking.deleteMany({});
+    res.status(200).json({
+      message: "All bookings deleted successfully",
+      deletedCount: result.deletedCount
+    });
+  } catch (error) {
+    console.error("Error deleting all bookings:", error);
+    res.status(500).json({ message: "Server error. Unable to delete all bookings." });
+  }
+};
