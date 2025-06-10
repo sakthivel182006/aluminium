@@ -1,5 +1,5 @@
 import express from 'express';
-import { createBooking, getAllBookings, getBookingById, updateBooking, deleteBooking } from '../controller/bookingcontroller.js'; // Fix path for controller
+import { createBooking, getAllBookings, getBookingById, updateBooking, deleteBooking,deleteallbooking } from '../controller/bookingcontroller.js'; // Fix path for controller
 
 const router = express.Router();
 
@@ -17,5 +17,7 @@ router.put('/bookings/:id', updateBooking);
 
 // Delete a booking by ID
 router.delete('/bookings/:id', deleteBooking);
+
+router.delete('/deleteall/bookings', deleteallbooking);
 
 export default router;
