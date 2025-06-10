@@ -73,7 +73,18 @@ export const createUser = async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   };
-  
+
+// --- Get All Users ---
+export const getallUser = async (req, res) => {
+  try {
+    const users = await User.find({}, '-password -otp -otpExpiry'); // Exclude sensitive fields
+    res.status(200).json({ users });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 // --- Post Login (Without JWT and bcrypt) ---
 export const loginUser = async (req, res) => {
   try {
