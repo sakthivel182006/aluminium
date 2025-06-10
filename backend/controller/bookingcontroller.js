@@ -14,7 +14,7 @@ const sendBookingEmailToOwner = async (booking) => {
 
     const mailOptions = {
       from: 'sakthivelv202222@gmail.com',
-      to: 'sakthivelv202222@gmail.com',
+      to: 'rajaragupathi00@gmail.com',
       subject: 'New Booking Received',
       html: `
         <h2>New Booking Details</h2>
