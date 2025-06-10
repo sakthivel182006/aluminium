@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 4000;
 
 // CORS setup to allow requests from specific origins
 const corsOptions = {
-  origin: ['https://madheshwaraenterprices.vercel.app', 'http://localhost:4000'],
+  origin: ['https://madheshwaraenterprices.vercel.app', 'https://sriammanhydraulicserviceraja.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 };
